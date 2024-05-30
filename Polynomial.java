@@ -45,6 +45,27 @@ public class Polynomial {
 
     }
 
+    public Polynomial delete_zeros() {
+
+        int non_zeros = 0;
+        for (double c : coefficients) {
+            if (c != 0) {
+                non_zeros++;
+            }
+        }
+
+        double result_coefficients[] = new double[non_zeros];
+        int result_exponents[] = new int[non_zeros];
+
+        for (int i = 0; i < non_zeros; i++) {
+            result_coefficients[i] = coefficients[i];
+            result_exponents[i] = exponents[i];
+        }
+
+        return new Polynomial(result_coefficients, result_exponents);
+
+    }
+
     public Boolean contains_exponent(int exponent, int[] exponents) {
 
         for (int exp : exponents) {
@@ -103,7 +124,7 @@ public class Polynomial {
 
         }
 
-        return new Polynomial(result_coefficients, result_exponents);
+        return new Polynomial(result_coefficients, result_exponents).delete_zeros();
 
     }
 
@@ -127,7 +148,7 @@ public class Polynomial {
         double sum = 0;
 
         for (int i = 0; i < coefficients.length; i++) {
-            sum += coefficients[i] * Math.pow(x, i);
+            sum += coefficients[i] * Math.pow(x, exponents[i]);
         }
 
         return sum;
@@ -145,16 +166,20 @@ public class Polynomial {
 
     public Polynomial multiply(Polynomial polynomial) {
 
-        int max_length = Math.max(polynomial.coefficients.length, coefficients.length);
-        int min_length = Math.min(polynomial.coefficients.length, coefficients.length);
+        double result_coefficients[] = new double[polynomial.coefficients.length * coefficients.length];
+        int result_exponents[] = new int[polynomial.coefficients.length * coefficients.length];
 
-        //double result_coefficients 
+        int k = 0;
+        for (int i = 0; i < coefficients.length; i++) {
+            for (int j = 0; j < polynomial.coefficients.length; j++) {
+                result_coefficients[k] = coefficients[i] * polynomial.coefficients[j];
+                result_exponents[k] = exponents[i] + polynomial.exponents[j];
+                k++;
+            }
+        }
 
-        Polynomial result = new Polynomial();
+        return new Polynomial(result_coefficients, result_exponents);
 
-
-
-        return result;
     }
 
 }
