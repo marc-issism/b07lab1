@@ -1,4 +1,3 @@
-import java.math.*;
 
 public class Polynomial {
 
@@ -46,20 +45,66 @@ public class Polynomial {
 
     }
 
-    public Polynomial add(Polynomial polynomial) {
+    public Boolean contains_exponent(int exponent, int[] exponents) {
 
-        int max_length = Math.max(polynomial.coefficients.length, coefficients.length);
-        int min_length = Math.min(polynomial.coefficients.length, coefficients.length);
-
-        // Take the max size of the bigger of the two polynomials and create an array with that size
-        double[] result_coefficients = new double[max_length];
-
-        for (int i = 0; i < min_length; i++) {
-            result_coefficients[i] = coefficients[i] + polynomial.coefficients[i];
+        for (int exp : exponents) {
+            if (exponent == exp) return true;
         }
 
-        return new Polynomial(result_coefficients);
+        return false;
+    }
+
+    public Polynomial get_max_coefficients(Polynomial polynomial) {
+
+        if (polynomial.coefficients.length > coefficients.length) {
+            return polynomial;
+        }
+
+        return this;
+
+    }
+
+    public Polynomial add(Polynomial polynomial) {
+
+        double result_coefficients[] = new double[coefficients.length + polynomial.coefficients.length];
+        int result_exponents[] = new int[coefficients.length + polynomial.coefficients.length];
+
+        int j = 0;
+        for (int e : exponents) {
+            if (!contains_exponent(e, result_exponents)) {
+                result_exponents[j] = e;
+                j++;
+            }
+        }
+        for (int e : polynomial.exponents) {
+            if (!contains_exponent(e, result_exponents)) {
+                result_exponents[j] = e;
+                j++;
+            }
+        }
+
+        for (int i = 0; i < result_exponents.length; i++) {
+            int e = result_exponents[i];
+            double sum = 0;
+
+            for (int k = 0; k < exponents.length; k++) {
+                if (exponents[k] == e) {
+                    sum += coefficients[k];
+                }
+            }
+
+            for (int k = 0; k < polynomial.exponents.length; k++) {
+                if (polynomial.exponents[k] == e) {
+                    sum += polynomial.coefficients[k];
+                }
+            }
         
+            result_coefficients[i] = sum;
+
+        }
+
+        return new Polynomial(result_coefficients, result_exponents);
+
     }
 
     public String toString() {
@@ -67,7 +112,10 @@ public class Polynomial {
         String output = "";
 
         for (int i = 0; i < coefficients.length; i++) {
-            output.concat(String.valueOf(coefficients[i]) + "x" );
+            if (coefficients[i] > 0 && i != 0) {
+                output = output.concat("+");
+            }
+            output = output.concat(String.valueOf(coefficients[i]) + "x" + String.valueOf(exponents[i]));
         } 
 
         return output;
