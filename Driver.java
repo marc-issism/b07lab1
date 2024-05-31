@@ -70,9 +70,30 @@ public class Driver {
             System.out.println("Testing multiply()...");
             Polynomial test4_1 = new Polynomial(new double[]{1, 1}, new int[]{0, 1});
             Polynomial test4_2 = new Polynomial(new double[]{-2, 1}, new int[]{0, 1});
+            Polynomial test4_result = new Polynomial(new double[]{-2, -1, 1}, new int[]{0, 1, 2});
+
+            if (!test4_result.equals(test4_1.multiply(test4_2))) {
+                System.out.println("Test 4a failed: Incorrect multiplaction of binomials.");
+            }
+            else {
+                System.out.println("Test 4 success!");
+            }
+            
 
 
-            System.out.println(test4_1.multiply(test4_2).toString());
+            System.out.println("Testing equals()...");
+            if (!(new Polynomial().equals(new Polynomial()))) {
+                System.out.println("Test 5a failed: Empty polynomials not equal.");
+            }
+            else if (!(new Polynomial(new double[]{1, 2, -3}, new int[]{0, 1, 2}).equals(new Polynomial(new double[]{1, 2, -3}, new int[]{0, 1, 2})))) {
+                System.out.println("Test 5b failed: Equal polynomials of order 3 not equal.");
+            }
+            else if (new Polynomial().equals(test4_2)) {
+                System.out.println("Test 5c failed: Empty polynomial equal to non-empty polynomial");
+            }
+            else {
+                System.out.println("Test 5 success!");
+            }
 
         }
     }

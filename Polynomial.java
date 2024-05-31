@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class Polynomial {
 
@@ -8,7 +10,7 @@ public class Polynomial {
     // Given nothing, construct polynomial with coefficient 0 and exponent 1
     public Polynomial() {
         coefficients = new double[]{0}; // Initialize coefficient to {0}
-        exponents = new int[]{1}; // Initialize exponent to {1}
+        exponents = new int[]{0}; // Initialize exponent to {0}
     }
 
     // Given only coefficients, construct polynomial with each coefficient to the power of 1
@@ -75,25 +77,22 @@ public class Polynomial {
         return false;
     }
 
-    public Polynomial get_max_coefficients(Polynomial polynomial) {
-
-        if (polynomial.coefficients.length > coefficients.length) {
-            return polynomial;
-        }
-
-        return this;
-
-    }
-
     public Polynomial add(Polynomial polynomial) {
 
         double result_coefficients[] = new double[coefficients.length + polynomial.coefficients.length];
         int result_exponents[] = new int[coefficients.length + polynomial.coefficients.length];
 
+        boolean hasZero = false;
+
         int j = 0;
         for (int e : exponents) {
             if (!contains_exponent(e, result_exponents)) {
                 result_exponents[j] = e;
+                j++;
+            }
+            else if (e == 0 && !hasZero) {
+                hasZero = true;
+                result_exponents[j] = 0;
                 j++;
             }
         }
@@ -102,9 +101,19 @@ public class Polynomial {
                 result_exponents[j] = e;
                 j++;
             }
+            else if (e == 0 && !hasZero) {
+                hasZero = true;
+                result_exponents[j] = 0;
+                j++;
+            }
         }
 
         for (int i = 0; i < result_exponents.length; i++) {
+
+            if (result_exponents[i] == 0 && i != 0) {
+                break;
+            }
+
             int e = result_exponents[i];
             double sum = 0;
 
@@ -128,6 +137,7 @@ public class Polynomial {
 
     }
 
+    @Override
     public String toString() {
 
         String output = "";
@@ -164,21 +174,42 @@ public class Polynomial {
         return false;
     }
 
+    @Override
+    public boolean equals(Object object) {
+
+        if (!(object instanceof Polynomial)) {
+            return false;
+        }
+
+        Polynomial polynomial = (Polynomial) object;
+
+        if (Arrays.equals(coefficients, polynomial.coefficients) && Arrays.equals(exponents, polynomial.exponents)) {
+            return true;
+        }
+
+        return false;
+
+
+    }
+
     public Polynomial multiply(Polynomial polynomial) {
 
-        double result_coefficients[] = new double[polynomial.coefficients.length * coefficients.length];
-        int result_exponents[] = new int[polynomial.coefficients.length * coefficients.length];
+        Polynomial sum = new Polynomial();
 
-        int k = 0;
         for (int i = 0; i < coefficients.length; i++) {
+            double result_coefficients[] = new double[coefficients.length];
+            int result_exponents[] = new int[coefficients.length];
+            int k = 0;
             for (int j = 0; j < polynomial.coefficients.length; j++) {
                 result_coefficients[k] = coefficients[i] * polynomial.coefficients[j];
                 result_exponents[k] = exponents[i] + polynomial.exponents[j];
                 k++;
             }
+            Polynomial result = new Polynomial(result_coefficients, result_exponents);
+            sum = sum.add(result);
         }
 
-        return new Polynomial(result_coefficients, result_exponents);
+        return sum;
 
     }
 
