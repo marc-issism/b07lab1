@@ -36,13 +36,13 @@ public class Driver {
             Polynomial test2b2 = new Polynomial(new double[]{4, 5}, new int[]{1, 5});
             Polynomial test2b_result = test2b1.add(test2b2);
             if (!Arrays.equals(test2b_result.coefficients, new double[]{5, 2, 3, 5})) {
-                System.out.println("Test 2a failed: unexpected coefficients.");
+                System.out.println("Test 2b failed: unexpected coefficients.");
             }
             else if (!Arrays.equals(test2b_result.exponents, new int[]{1, 2, 3, 5})) {
-                System.out.println("Test 2a failed: unexpected exponents.");
+                System.out.println("Test 2b failed: unexpected exponents.");
             }
             else {
-                System.out.println("Test 2a success!");
+                System.out.println("Test 2b success!");
             }
 
             System.out.println("Testing evaluate()...");
