@@ -2,6 +2,8 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class Polynomial {
 
@@ -331,6 +333,18 @@ public class Polynomial {
 
     }
 
+    public void saveToFile(String file_name) {
 
+        try {
+            FileWriter writer = new FileWriter(file_name);
+            writer.write(this.toString());
+            writer.close();
+        }
+        catch (IOException e) {
+            System.out.println("Could not write to file");
+            e.printStackTrace();
+        }
+
+    }
 
 }

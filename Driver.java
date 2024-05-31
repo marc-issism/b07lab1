@@ -99,5 +99,7 @@ public class Driver {
             Polynomial p = new Polynomial(new File("poly.txt"));
             System.out.println(p);
 
+            p.saveToFile("new_poly.txt");
+
         }
     }
