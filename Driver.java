@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.io.File;
 
 public class Driver {
         public static void main(String [] args) {
@@ -94,6 +95,9 @@ public class Driver {
             else {
                 System.out.println("Test 5 success!");
             }
+
+            Polynomial p = new Polynomial(new File("poly.txt"));
+            System.out.println(p);
 
         }
     }

@@ -1,5 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Polynomial {
 
@@ -46,6 +49,105 @@ public class Polynomial {
         }
 
     }
+
+    // Given a File
+    public Polynomial(File file) {
+        try {
+            Scanner scanner = new Scanner(file);
+            String data = scanner.nextLine();
+            System.out.println(data);
+            scanner.close();
+
+            String expression[] = data.split("[+]");
+            double result_coefficients[] = new double[data.length()];
+            int result_exponents[] = new int[data.length()];
+
+            int j = 0;
+            for (int i = 0; i < expression.length; i++) {
+                String term = expression[i];
+                
+                if (i == 0) {
+                    if (!term.contains("x")) {
+                        result_coefficients[j] = Double.parseDouble(term);
+                        result_exponents[j] = 0;
+                        j++;
+                    }
+                    else {
+                        String subsubexpression[] = term.split("x");
+                        if (subsubexpression.length == 1) {
+                            result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                            result_exponents[j] = 1;
+                            j++;
+                        }
+                        else {
+                            result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                            result_exponents[j] = Integer.parseInt(subsubexpression[1]);
+                            j++;
+                        }
+                    }
+                }
+                else if (term.contains("-")) {
+                    String subexpression[] = term.split("-");
+                    for (int k = 0; k < subexpression.length; k++) {
+                        String subterm = subexpression[k];
+                        if (k != 0) {subterm = "-" + subterm;}
+
+                        if (!subterm.contains("x")) {
+                            result_coefficients[j] = Double.parseDouble(subterm);
+                            result_exponents[j] = 0;
+                            j++;
+                        }
+                        else {
+                            String subsubexpression[] = subterm.split("x");
+                            if (subsubexpression.length == 1) {
+                                result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                                result_exponents[j] = 1;
+                                j++;
+                            }
+                            else {
+                                result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                                result_exponents[j] = Integer.parseInt(subsubexpression[1]);
+                                j++;
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (!term.contains("x")) {
+                        result_coefficients[j] = Double.parseDouble(term);
+                        result_exponents[j] = 0;
+                        j++;
+                    }
+                    else {
+                        String subsubexpression[] = term.split("x");
+                        if (subsubexpression.length == 1) {
+                            result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                            result_exponents[j] = 1;
+                            j++;
+                        }
+                        else {
+                            result_coefficients[j] = Double.parseDouble(subsubexpression[0]);
+                            result_exponents[j] = Integer.parseInt(subsubexpression[1]);
+                            j++;
+                        }
+                    }
+                }
+
+
+
+            }
+
+            Polynomial result = new Polynomial(result_coefficients, result_exponents).delete_zeros();
+
+            this.coefficients = result.coefficients;
+            this.exponents = result.exponents;
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found.");
+            e.printStackTrace();
+        }
+        
+    }   
 
     public Polynomial delete_zeros() {
 
@@ -212,5 +314,7 @@ public class Polynomial {
         return sum;
 
     }
+
+
 
 }
