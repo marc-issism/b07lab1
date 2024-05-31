@@ -80,8 +80,6 @@ public class Driver {
                 System.out.println("Test 4 success!");
             }
             
-
-
             System.out.println("Testing equals()...");
             if (!(new Polynomial().equals(new Polynomial()))) {
                 System.out.println("Test 5a failed: Empty polynomials not equal.");
@@ -100,6 +98,14 @@ public class Driver {
             System.out.println(p);
 
             p.saveToFile("new_poly.txt");
+
+            System.out.println("Testing Polynomial(File) and saveToFile()...");
+            if (!new Polynomial(new File("new_poly.txt")).equals(p)) {
+                System.out.println("Test 6 failed: polynomial in file not equal to polynomial saved to file");
+            }
+            else {
+                System.out.println("Test 6 success!");
+            }
 
         }
     }
