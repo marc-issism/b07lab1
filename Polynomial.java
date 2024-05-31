@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Polynomial {
 
@@ -245,10 +244,27 @@ public class Polynomial {
         String output = "";
 
         for (int i = 0; i < coefficients.length; i++) {
-            if (coefficients[i] > 0 && i != 0) {
+
+            String coefficient = String.valueOf(coefficients[i]);
+
+            if ( Double.parseDouble(coefficient) % 1 == 0) {
+                coefficient = String.valueOf((int) Double.parseDouble(coefficient));
+            }
+
+            if (Double.parseDouble(coefficient) > 0 && i != 0) {
                 output = output.concat("+");
             }
-            output = output.concat(String.valueOf(coefficients[i]) + "x" + String.valueOf(exponents[i]));
+
+            if (exponents[i] != 0 && exponents[i] != 1) {
+                output = output.concat(coefficient + "x" + String.valueOf(exponents[i]));
+            }
+            else if (exponents[i] == 1) {
+                output = output.concat(coefficient + "x");
+            }
+            else {
+                output = output.concat(coefficient);
+            }
+
         } 
 
         return output;
